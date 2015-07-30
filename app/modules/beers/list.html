@@ -1,0 +1,22 @@
+<h2>Listagem de Cervejas </h2>
+
+
+<p class="msg">
+  {{msg}}
+</p>
+
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Preço</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr data-ng-repeat='beer in beers'>
+      <td>{{beer.name}}</td>
+      <td>{{beer.price}}</td>
+    </tr>
+  </tbody>
+</table>
