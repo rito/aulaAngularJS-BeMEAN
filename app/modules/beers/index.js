@@ -1,80 +1,32 @@
 'use strict';
 
-angular.module('myApp.Beers', ['ngRoute'])
-
-
-.config(['$routeProvider', beersConfig])
-.controller('BeerListController', BeerListController)
-.controller('BeerCreateController', BeerCreateController);
+angular.module('myApp.Beers', [
+    'ngRoute'
+  , 'myApp.Beers.Controllers'
+  , 'myApp.Beers.Service'
+  ])
+.config(['$routeProvider', beersConfig]);
 
 //Configuracoes
 function beersConfig($routeProvider) {
   $routeProvider
     .when('/beers', {
-      templateUrl: 'modules/beers/list.html',
+      templateUrl: 'modules/beers/views/list.html',
       controller: 'BeerListController'
     })
     .when('/beers/create', {
-      templateUrl: 'modules/beers/create.html',
+      templateUrl: 'modules/beers/views/create.html',
       controller: 'BeerCreateController'
+    })
+    .when('/beers/:id', {
+      templateUrl: 'modules/beers/views/get.html',
+      controller: 'BeerGetController'
+    })
+    .when('/beers/:id/edit', {
+      templateUrl: 'modules/beers/views/edit.html',
+      controller: 'BeerEditController'
     })
     ;
 }
 
 beersConfig['$inject'] = ['$routeProvider'];
-
-
-// Controllers
-function BeerListController($scope, $http) {
-  var httpRequest = {
-      url: 'http://localhost:3000/api/beers'
-    , method: 'GET'
-  }
-  ;
-
-  $http(httpRequest)
-  .success(function(data) {
-    console.log('SUCESSO: ', data);
-    $scope.beers = data;
-    $scope.msg = "Listagem feita com sucesso";
-  })
-  .error(function(err){
-    console.log('ERRO : ', err);
-    $scope.msg = "Erro ao carregar listagem";
-  });
-
-};
-
-
-
-function BeerCreateController($scope, $http) {
-
-  $scope.create = function(beer) {
-    var httpRequest = {
-          url: 'http://localhost:3000/api/beers'
-        , method: 'POST'
-        , data: beer
-        }
-      ;
-
-    $http(httpRequest)
-    .success(function(data) {
-      console.log('SUCESSO: ', data);
-      // $scope.beers = data;
-      $scope.msg = 'Cadastro da cerveja feito com sucesso.';
-    })
-    .error(function(err) {
-      console.log('ERRO: ', err);
-      $scope.msg = 'Cadastro da cerveja não pode ser feito.';
-
-    });
-  }
-
-};
-
-
-
-
-
-BeerListController.$inject = ['$scope', '$http'];
-BeerCreateController.$inject = ['$scope', '$http'];
